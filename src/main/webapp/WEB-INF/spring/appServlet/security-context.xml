@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 인증관련 부분 -->
+	<security:authentication-manager>
+<!-- 		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="tylee" authorities="ROLE_ADMIN"
+					password="letmein" />
+			</security:user-service>
+		</security:authentication-provider> -->
+		
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select username, password, enabled from users where username=?"
+				authorities-by-username-query="select username, authority from authorities where username=?" />
+		</security:authentication-provider> 
+	</security:authentication-manager>
+
+	<security:http auto-config="true" use-expressions="true">
+		<security:intercept-url pattern="/" access="isAuthenticated()" /> <!-- isAuthenticated() -->
+		<security:intercept-url pattern="/home" access="permitAll" />
+		<security:intercept-url pattern="/login" access="permitAll" />
+		<security:intercept-url pattern="/logout" access="permitAll" />
+		
+		<security:intercept-url pattern="/preview" access="permitAll" />
+		<security:intercept-url pattern="/grades" access="permitAll" />
+		
+		<security:intercept-url pattern="/createenrolment" access="permitAll" />
+		<security:intercept-url pattern="/doenroll" access="permitAll" />
+		<security:intercept-url pattern="/enrolled" access="permitAll" />
+		<security:intercept-url pattern="/showenroll" access="permitAll" />
+
+		<security:intercept-url pattern="/resources/**" access="permitAll" /> <!-- css 접근 -->
+		<security:intercept-url pattern="/**" access="denyAll" />
+		<security:form-login login-page="/login"
+			username-parameter="username" password-parameter="password" />
+		<security:logout />
+		
+		
+	</security:http>
+</beans>

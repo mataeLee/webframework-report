@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+table {
+	border-collapse: collapse;
+}
+
+table, th, td {
+	padding: 15px;
+	text-align: left;
+	border: 1px solid black;
+}
+
+td:hover {
+	background-color: #ffff00;
+}
